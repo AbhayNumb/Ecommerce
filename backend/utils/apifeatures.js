@@ -28,8 +28,8 @@ class ApiFeatures {
   pagination(resultperpage) {
     const currentpage = this.queryStr.page;
     const skip = resultperpage * (currentpage - 1);
-    this.query=this.query.limit(resultperpage).skip(skip);
-    return this
+    this.query = this.query.limit(resultperpage).skip(skip);
+    return this;
   }
 }
 module.exports = ApiFeatures;
