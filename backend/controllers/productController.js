@@ -4,7 +4,7 @@ const catchAsyncError = require("../middleware/catchAsyncError");
 const ApiFeatures = require("../utils/apifeatures");
 //create product----ADMIN
 exports.createProduct = catchAsyncError(async (req, res, next) => {
-  req.body.user=req.user.id
+  req.body.user = req.user.id;
   const product = await Product.create(req.body);
   res.status(201).json({
     success: true,
@@ -56,8 +56,9 @@ exports.getProductDetails = catchAsyncError(async (req, res, next) => {
   });
 });
 
-exports.getAllProducts = catchAsyncError(async (req, res) => {
-  const resultperpage = 5;
+exports.getAllProducts = catchAsyncError(async (req, res, next) => {
+  // return next(new ErrorHandler("This is my temp err",500))
+  const resultperpage = 8;
   const productcount = await Product.countDocuments();
   const apifeatures = new ApiFeatures(Product.find(), req.query)
     .search()
