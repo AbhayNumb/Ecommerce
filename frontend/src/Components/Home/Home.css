@@ -45,6 +45,19 @@
   clip-path: polygon(100% 80%, 0% 100%, 100% 100%);
   max-width: 100%;
 }
+@media screen and (max-width: 600px) {
+  .banner::after {
+    content: "";
+    width: 100vw;
+    height: 100vmin;
+    background-color: #ffffff;
+    position: absolute;
+    clip-path: polygon(100% 100%, 100% 100%, 100% 100%);
+    top: 0%;
+    left: 0;
+    max-width: 100%;
+  }
+}
 .homeHeading {
   text-align: center;
   font-family: Roboto;

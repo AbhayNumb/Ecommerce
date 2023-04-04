@@ -3,7 +3,7 @@ import { CgMouse } from "react-icons/cg";
 import "./Home.css";
 import Product from "./Product.jsx";
 import MetaDeta from "../Layout/MetaDeta";
-import { getProduct } from "../../actions/productAction";
+import { clearError, getProduct } from "../../actions/productAction";
 import { useSelector, useDispatch } from "react-redux";
 import Loader from "../Layout/Loader/Loader";
 import { useAlert } from "react-alert";
@@ -12,12 +12,12 @@ const Home = () => {
   const alert = useAlert();
   const { loading, error, products } = useSelector((state) => state.products);
   useEffect(() => {
-    console.log(error);
     if (error) {
-      return alert.error(error);
+      alert.error(error);
+      dispatch(clearError());
     }
     dispatch(getProduct());
-  }, [dispatch,error]);
+  }, [dispatch, error, alert]);
 
   return (
     <Fragment>

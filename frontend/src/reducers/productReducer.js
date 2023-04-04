@@ -1,8 +1,9 @@
 import { createReducer } from "@reduxjs/toolkit";
 const initialState = {
   products: [],
+  loading: true,
 };
-export const customReducer = createReducer(initialState, {
+export const productReducer = createReducer(initialState, {
   all_product_request: (state, action) => {
     state.products = [];
     state.loading = true;
@@ -18,6 +19,22 @@ export const customReducer = createReducer(initialState, {
   },
   clear_error: (state, action) => {
     state.products = action.payload.products;
+    state.error = null;
+  },
+});
+export const productDetailsReducer = createReducer(initialState, {
+  product_details_request: (state, action) => {
+    state.loading = true;
+  },
+  product_details_success: (state, action) => {
+    state.product = action.payload;
+    state.loading = false;
+  },
+  product_details_fail: (state, action) => {
+    state.loading = true;
+    state.error = action.payload;
+  },
+  clear_error: (state, action) => {
     state.error = null;
   },
 });
