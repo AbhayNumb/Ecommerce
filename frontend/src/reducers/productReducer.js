@@ -11,14 +11,15 @@ export const productReducer = createReducer(initialState, {
   all_product_success: (state, action) => {
     state.products = action.payload.products;
     state.loading = false;
-    state.productsCount = action.payload.productsCount;
+    state.productsCount = action.payload.productcount;
+    state.resultperpage = action.payload.resultperpage;
+    state.filteredProductsCount = action.payload.filteredProductsCount;
   },
   all_product_fail: (state, action) => {
     state.loading = false;
     state.error = action.payload;
   },
   clear_error: (state, action) => {
-    state.products = action.payload.products;
     state.error = null;
   },
 });

@@ -60,11 +60,18 @@ exports.getAllProducts = catchAsyncError(async (req, res, next) => {
   // return next(new ErrorHandler("This is my temp err",500))
   const resultperpage = 8;
   const productcount = await Product.countDocuments();
+  const apifeaturesdemo = new ApiFeatures(Product.find(), req.query)
+    .search()
+    .filter();
+  let products = await apifeaturesdemo.query;
+  let filteredProductsCount = products.length;
+  // apifeatures.pagination(resultperpage);
+  console.log(req.query);
   const apifeatures = new ApiFeatures(Product.find(), req.query)
     .search()
     .filter()
     .pagination(resultperpage);
-  const products = await apifeatures.query;
+  products = await apifeatures.query;
   if (!products) {
     return next(new ErrorHandler("Product not found", 404));
   }
@@ -72,5 +79,7 @@ exports.getAllProducts = catchAsyncError(async (req, res, next) => {
     success: true,
     products,
     productcount,
+    resultperpage,
+    filteredProductsCount,
   });
 });

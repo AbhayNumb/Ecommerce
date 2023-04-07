@@ -10,10 +10,13 @@
 
 .products {
   display: flex;
+  width: 80vmax;
+  margin-left: 8rem;
+  padding: 5vmax;
   flex-wrap: wrap;
-  padding: 0 5vmax;
   justify-content: center;
   min-height: 30vh;
+  flex-wrap: wrap;
 }
 
 .paginationBox {
@@ -69,8 +72,8 @@
 .filterBox {
   width: 10vmax;
   position: absolute;
-  top: 10vmax;
-  left: 4vmax;
+  top: 15vmax;
+  left: 3vmax;
 }
 
 .categoryBox {
@@ -99,7 +102,10 @@
     position: static;
     margin: auto;
   }
-
+  .products {
+    width: 20rem;
+    margin-left: 1rem;
+  }
   .page-link {
     font: 300 1.7vmax "Roboto";
   }

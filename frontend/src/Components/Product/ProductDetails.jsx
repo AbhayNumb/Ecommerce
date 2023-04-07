@@ -10,6 +10,7 @@ import { Paper, Button } from "@material-ui/core";
 import ReactStars from "react-rating-stars-component";
 import ReviewCard from "./ReviewCard";
 import { useAlert } from "react-alert";
+import MetaDeta from "../Layout/MetaDeta";
 const useStyles = makeStyles((theme) => ({
   root: {
     margin: "auto",
@@ -59,6 +60,7 @@ const ProductDetails = ({ match }) => {
         <Loader />
       ) : (
         <Fragment>
+          <MetaDeta title={`${product.name} -- ECOMMERCE`} />
           <div className="ProductDetails">
             <div>
               <Carousel

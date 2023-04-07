@@ -5,16 +5,25 @@ const Product = require("../models/productModel");
 const sendToken = require("../utils/jwtToken");
 const sendEmail = require("../utils/sendEmail.js");
 const crypto = require("crypto");
+const cloudinary = require("cloudinary");
 //register a user
 exports.registerUser = catchAsyncError(async (req, res, next) => {
+  console.log(req.body);
+  console.log(req);
+  const myCloud = await cloudinary.v2.uploader.upload(req.body.avatar, {
+    folder: "avatars",
+    width: 150,
+    crop: "scale",
+  });
+
   const { name, email, password } = req.body;
   const user = await User.create({
     name,
     email,
     password,
     avatar: {
-      public_id: "this is a sample id",
-      url: "profilepicurl",
+      public_id: myCloud.public_id,
+      url: myCloud.secure_url,
     },
   });
   sendToken(user, 201, res);
@@ -23,6 +32,7 @@ exports.registerUser = catchAsyncError(async (req, res, next) => {
 //login user
 exports.loginUser = catchAsyncError(async (req, res, next) => {
   const { email, password } = req.body;
+  // console.log(email,password);
   //checking if user has given password and email both
   if (!email || !password) {
     return next(new ErrorHandler("Please Enter Email and Password", 400));
@@ -133,10 +143,25 @@ exports.updatePassword = catchAsyncError(async (req, res, next) => {
 
 //update user profile
 exports.updateProfile = catchAsyncError(async (req, res, next) => {
+  console.log("GI");
   const newUserData = {
     name: req.body.name,
     email: req.body.email,
   };
+  if (req.body.avatar !== "") {
+    const user = await User.findById(req.user.id);
+    const imageId = user.avatar.public_id;
+    await cloudinary.v2.uploader.destroy(imageId);
+    const myCloud = await cloudinary.v2.uploader.upload(req.body.avatar, {
+      folder: "avatars",
+      width: 150,
+      crop: "scale",
+    });
+    newUserData.avatar = {
+      public_id: myCloud.public_id,
+      url: myCloud.secure_url,
+    };
+  }
   const user = await User.findByIdAndUpdate(req.user.id, newUserData, {
     new: true,
     runValidators: true,
