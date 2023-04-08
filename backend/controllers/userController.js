@@ -32,7 +32,7 @@ exports.registerUser = catchAsyncError(async (req, res, next) => {
 //login user
 exports.loginUser = catchAsyncError(async (req, res, next) => {
   const { email, password } = req.body;
-  // console.log(email,password);
+  console.log(email,password);
   //checking if user has given password and email both
   if (!email || !password) {
     return next(new ErrorHandler("Please Enter Email and Password", 400));
@@ -68,10 +68,8 @@ exports.forgotPassword = catchAsyncError(async (req, res, next) => {
   //get resetpassword token
   const resetToken = user.getResetPasswordToken();
   await user.save({ validateBeforeSave: false });
-  const resetPasswordUrl = `${req.protocol}://${req.get(
-    "host"
-  )}/api/v1/password/reset/${resetToken}`;
-  const message = `Your password reset token is :- \n\n ${resetPasswordUrl}  \n\nIf you have not requested this email then, please ignore it`;
+  const resetPasswordUrl = `${process.env.FRONTEND_URL}/password/reset/${resetToken}`;
+  const message = `Your password reset token is :- \n\n ${resetPasswordUrl} \n\nIf you have not requested this email then, please ignore it.`;
   try {
     await sendEmail({
       email: user.email,
@@ -115,7 +113,10 @@ exports.resetPassword = catchAsyncError(async (req, res, next) => {
   user.resetPasswordExpire = undefined;
   user.resetPasswordToken = undefined;
   await user.save();
-  sendToken(user, 200, res);
+  // sendToken(user, 200, res);
+  res.status(200).json({
+    success: true,
+  });
 });
 //get User details
 exports.getUserDetails = catchAsyncError(async (req, res, next) => {
@@ -143,7 +144,9 @@ exports.updatePassword = catchAsyncError(async (req, res, next) => {
 
 //update user profile
 exports.updateProfile = catchAsyncError(async (req, res, next) => {
-  console.log("GI");
+  // console.log(
+  //   "GI" + " " + req.body.name + " " + req.body.email + " " + req.body.avatar
+  // );
   const newUserData = {
     name: req.body.name,
     email: req.body.email,

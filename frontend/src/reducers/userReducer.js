@@ -33,6 +33,10 @@ export const userReducer = createReducer(initialState, {
     state.isAuthenticated = false;
     state.error = action.payload;
   },
+  logout: (state, action) => {
+    state.user = null;
+    state.isAuthenticated = false;
+  },
 
   load_user_request: (state, action) => {
     state.loading = true;
@@ -47,7 +51,6 @@ export const userReducer = createReducer(initialState, {
     state.loading = false;
     state.user = [];
     state.isAuthenticated = false;
-    state.error = action.payload;
   },
   logout_success: (state, action) => {
     state.loading = false;
@@ -80,7 +83,58 @@ export const profileReducer = createReducer(
     update_profile_reset: (state, action) => {
       state.isUpdated = false;
     },
+    update_password_request: (state, action) => {
+      state.loading = true;
+    },
+    update_password_success: (state, action) => {
+      state.loading = false;
+      state.isUpdated = action.payload;
+    },
+    update_password_fail: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+    update_password_reset: (state, action) => {
+      state.isUpdated = false;
+    },
+
     clear_error: (state, action) => {
+      state.error = null;
+    },
+  }
+);
+export const forgotPasswordReducer = createReducer(
+  {},
+  {
+    forgot_password_request: (state, action) => {
+      state.message = null;
+      state.loading = true;
+      state.error = null;
+    },
+    forgot_password_success: (state, action) => {
+      state.loading = false;
+      state.message = action.payload;
+    },
+    forgot_password_fail: (state, action) => {
+      state.loading = false;
+      state.message = null;
+      state.error = action.payload;
+    },
+    reset_password_request: (state, action) => {
+      state.loading = true;
+      state.error = null;
+    },
+    reset_password_success: (state, action) => {
+      state.loading = false;
+      state.success = action.payload;
+    },
+    reset_password_fail: (state, action) => {
+      state.loading = false;
+      state.message = null;
+      state.error = action.payload;
+    },
+    clear_error: (state, action) => {
+      state.message = null;
       state.error = null;
     },
   }

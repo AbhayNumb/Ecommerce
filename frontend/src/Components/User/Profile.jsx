@@ -29,7 +29,7 @@ const Profile = () => {
                 <div>
                   <img src={user.avatar.url} alt={user.name} />
                 </div>
-                <Link to="/update">Edit Profile</Link>
+                <Link to="/me/update">Edit Profile</Link>
               </div>
               <div>
                 <div>
