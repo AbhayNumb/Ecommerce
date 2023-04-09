@@ -9,6 +9,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { clearError, login, register } from "../../actions/userAction";
 import { useAlert } from "react-alert";
 import { useNavigate } from "react-router-dom";
+import Profile from "../../Images/Profile.png";
+import base64 from "base64-js"; // You may need to install this package using npm or yarn
+
 const LoginSignUp = () => {
   const dispatch = useDispatch();
   const alert = useAlert();
@@ -29,7 +32,6 @@ const LoginSignUp = () => {
   const [password, setPassword] = useState("");
   const [avatar, setAvatar] = useState("/Profile.png");
   const [avatarPreview, setAvatarPreview] = useState("/Profile.png");
-
   const loginSubmit = (e) => {
     e.preventDefault();
     dispatch(login(loginEmail, loginPassword));
@@ -58,11 +60,27 @@ const LoginSignUp = () => {
   };
 
   useEffect(() => {
+    const fetchImage = async () => {
+      try {
+        const response = await fetch("./Profile.png");
+        const blob = await response.blob();
+        const reader = new FileReader();
+        reader.onload = () => {
+          const arrayBuffer = reader.result;
+          const bytes = new Uint8Array(arrayBuffer);
+          const encoded = base64.fromByteArray(bytes);
+          setAvatar(`data:image/png;base64,${encoded}`);
+        };
+        reader.readAsArrayBuffer(blob);
+      } catch (error) {
+        console.error("Error fetching image:", error);
+      }
+    };
+    fetchImage();
     if (error) {
       alert.error(error);
       dispatch(clearError());
     }
-
     if (isAuthenticated) {
       navigate("/account");
     }

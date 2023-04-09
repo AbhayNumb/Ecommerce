@@ -11,6 +11,7 @@ import ReactStars from "react-rating-stars-component";
 import ReviewCard from "./ReviewCard";
 import { useAlert } from "react-alert";
 import MetaDeta from "../Layout/MetaDeta";
+import { addItemToCart } from "../../actions/cartActions";
 const useStyles = makeStyles((theme) => ({
   root: {
     margin: "auto",
@@ -25,6 +26,26 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ProductDetails = ({ match }) => {
+  const [quantity, setQuantity] = useState(1);
+  const increaseQuantity = () => {
+    if (product.Stock <= quantity) {
+      return;
+    }
+    const qty = quantity + 1;
+    setQuantity(qty);
+  };
+  const decreaseQuantity = () => {
+    if (1 >= quantity) {
+      return;
+    }
+    const qty = quantity - 1;
+    setQuantity(qty);
+  };
+  const addToCartHandler = () => {
+    dispatch(addItemToCart(id, quantity));
+    alert.success("Item Added To Cart");
+  };
+
   const alert = useAlert();
   const classname = useStyles();
   const [carouselIndex, setCarouselIndex] = useState(0);
@@ -98,11 +119,11 @@ const ProductDetails = ({ match }) => {
                 <h1>{`₹${product.price}`}</h1>
                 <div className="detailsBlock-3-1">
                   <div className="detailsBlock-3-1-1">
-                    <button>-</button>
-                    <input value="1" type="number" />
-                    <button>+</button>
+                    <button onClick={decreaseQuantity}>-</button>
+                    <input value={quantity} type="number" />
+                    <button onClick={increaseQuantity}>+</button>
                   </div>{" "}
-                  <button>Add to Cart</button>
+                  <button onClick={addToCartHandler}>Add to Cart</button>
                 </div>
                 <p>
                   Status:{" "}

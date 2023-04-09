@@ -11,13 +11,24 @@ import { useAlert } from "react-alert";
 import { logout } from "../../../actions/userAction";
 import { useDispatch } from "react-redux";
 import { Backdrop } from "@material-ui/core";
+import { useSelector } from "react-redux";
 const UserOptions = ({ user }) => {
+  const { cartItems } = useSelector((state) => state.cart);
   const alert = useAlert();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const options = [
     { icon: <ListAltIcon />, name: "Orders", func: orders },
     { icon: <PersonIcon />, name: "Profile", func: account },
+    {
+      icon: (
+        <ShoppingCartIcon
+          style={{ color: cartItems.length > 0 ? "#e4815d" : "unset" }}
+        />
+      ),
+      name: `Cart${cartItems.length}`,
+      func: cart,
+    },
     { icon: <ExitToAppIcon />, name: "Logout", func: logoutUser },
   ];
   if (user.role === "admin") {
@@ -26,6 +37,9 @@ const UserOptions = ({ user }) => {
       name: "Dashboard",
       func: dashboard,
     });
+  }
+  function cart() {
+    navigate("/Cart");
   }
   function dashboard() {
     navigate("/dashboard");

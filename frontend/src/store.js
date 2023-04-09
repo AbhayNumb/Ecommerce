@@ -8,6 +8,7 @@ import {
   profileReducer,
   userReducer,
 } from "./reducers/userReducer";
+import { cartReducer } from "./reducers/cartReducer";
 const store = configureStore({
   reducer: {
     products: productReducer,
@@ -15,6 +16,7 @@ const store = configureStore({
     user: userReducer,
     profile: profileReducer,
     forgotPassword: forgotPasswordReducer,
+    cart: cartReducer,
   },
 });
 export default store;
