@@ -3,6 +3,9 @@ const initialState = {
   cartItems: localStorage.getItem("cartItems")
     ? JSON.parse(localStorage.getItem("cartItems"))
     : [],
+  shippingInfo: localStorage.getItem("shippingInfo")
+    ? JSON.parse(localStorage.getItem("shippingInfo"))
+    : {},
 };
 export const cartReducer = createReducer(initialState, {
   add_to_cart: (state, action) => {
@@ -24,5 +27,8 @@ export const cartReducer = createReducer(initialState, {
     state.cartItems = state.cartItems.filter(
       (i) => i.product !== action.payload
     );
+  },
+  save_shipping_info: (state, action) => {
+    state.shippingInfo = action.payload;
   },
 });

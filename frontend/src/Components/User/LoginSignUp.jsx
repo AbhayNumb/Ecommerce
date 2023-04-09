@@ -1,6 +1,6 @@
 import React, { Fragment, useRef, useState, useEffect } from "react";
 import Loader from "../Layout/Loader/Loader";
-import { Link } from "react-router-dom";
+import { Link, redirect } from "react-router-dom";
 import MailOutlineIcon from "@material-ui/icons/MailOutline";
 import LockOpenIcon from "@material-ui/icons/LockOpen";
 import FaceIcon from "@material-ui/icons/Face";
@@ -10,9 +10,11 @@ import { clearError, login, register } from "../../actions/userAction";
 import { useAlert } from "react-alert";
 import { useNavigate } from "react-router-dom";
 import Profile from "../../Images/Profile.png";
+import { useLocation } from "react-router-dom";
 import base64 from "base64-js"; // You may need to install this package using npm or yarn
 
 const LoginSignUp = () => {
+  const location = useLocation();
   const dispatch = useDispatch();
   const alert = useAlert();
 
@@ -81,10 +83,14 @@ const LoginSignUp = () => {
       alert.error(error);
       dispatch(clearError());
     }
+    const redirect = location.search
+      ? "/" + location.search.split("=")[1]
+      : "/account";
+    console.log(redirect);
     if (isAuthenticated) {
-      navigate("/account");
+      navigate(redirect);
     }
-  }, [dispatch, error, alert, navigate, isAuthenticated]);
+  }, [dispatch, error, alert, navigate, isAuthenticated, redirect]);
 
   const switchTabs = (e, tab) => {
     if (tab === "login") {

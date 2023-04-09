@@ -7,7 +7,9 @@ import { useSelector, useDispatch } from "react-redux";
 import CartItemCard from "./CartItemCard.jsx";
 import RemoveShoppingCartIcon from "@material-ui/icons/RemoveShoppingCart";
 import { addItemToCart, removeCartItem } from "../../actions/cartActions";
+import { useNavigate } from "react-router-dom";
 const Cart = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { cartItems } = useSelector((state) => state.cart);
 
@@ -31,8 +33,10 @@ const Cart = () => {
     dispatch(removeCartItem(id));
   };
 
-  const checkoutHandler = () => {};
-//   console.log(cartItems);
+  const checkoutHandler = () => {
+    navigate("/login?redirect=shipping");
+  };
+  //   console.log(cartItems);
   return (
     <Fragment>
       {cartItems.length === 0 ? (

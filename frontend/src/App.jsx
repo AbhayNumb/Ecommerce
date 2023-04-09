@@ -1,4 +1,5 @@
 import "./App.css";
+import { useState } from "react";
 import Header from "./Components/Layout/Header/Header.jsx";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import WebFont from "webfontloader";
@@ -20,8 +21,23 @@ import UpdatePassword from "./Components/User/UpdatePassword.jsx";
 import ForgotPassword from "./Components/User/ForgotPassword.jsx";
 import ResetPassword from "./Components/User/ResetPassword.jsx";
 import Cart from "./Components/Cart/Cart.jsx";
+import Shipping from "./Components/Cart/Shipping.jsx";
+import ConfirmOrder from "./Components/Cart/ConfirmOrder.jsx";
+import Payment from "./Components/Cart/Payment.jsx";
+import OrderSuccess from "./Components/Cart/OrderSuccess.jsx";
+import axios from "axios";
+import StripeLayout from "./Components/Route/StripeLayout";
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
 function App() {
   const { isAuthenticated, user } = useSelector((state) => state.user);
+  const [stripeApiKey, setStripeApiKey] = useState("");
+  async function getStripeApiKey() {
+    const { data } = await axios.get("/api/v1/stripeapikey");
+
+    setStripeApiKey(data.stripeApiKey);
+  }
+
   React.useEffect(() => {
     WebFont.load({
       google: {
@@ -29,6 +45,7 @@ function App() {
       },
     });
     store.dispatch(loaduser());
+    getStripeApiKey();
   }, []);
   return (
     <BrowserRouter>
@@ -61,6 +78,41 @@ function App() {
           element={
             <ProtectedRoute>
               <UpdatePassword />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/shipping"
+          element={
+            <ProtectedRoute>
+              <Shipping />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/order/confirm"
+          element={
+            <ProtectedRoute>
+              <ConfirmOrder />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route element={<StripeLayout {...{ stripeApiKey }} />}>
+          <Route
+            path="/process/payment"
+            element={
+              <Elements stripe={loadStripe(stripeApiKey)}>
+                <Payment />
+              </Elements>
+            }
+          />
+        </Route>
+        <Route
+          path="/success"
+          element={
+            <ProtectedRoute>
+              <OrderSuccess />
             </ProtectedRoute>
           }
         />
