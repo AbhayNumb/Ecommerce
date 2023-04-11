@@ -25,6 +25,7 @@ import Shipping from "./Components/Cart/Shipping.jsx";
 import ConfirmOrder from "./Components/Cart/ConfirmOrder.jsx";
 import Payment from "./Components/Cart/Payment.jsx";
 import OrderSuccess from "./Components/Cart/OrderSuccess.jsx";
+import MyOrders from "./Components/Cart/MyOrders.jsx";
 import axios from "axios";
 import StripeLayout from "./Components/Route/StripeLayout";
 import { Elements } from "@stripe/react-stripe-js";
@@ -116,6 +117,15 @@ function App() {
             </ProtectedRoute>
           }
         />
+        <Route
+          path="/orders"
+          element={
+            <ProtectedRoute>
+              <MyOrders />
+            </ProtectedRoute>
+          }
+        />
+
         <Route path="/Cart" element={<Cart />} />
         <Route path="/password/forgot" element={<ForgotPassword />} />
         <Route path="/search" element={<Search />} />
