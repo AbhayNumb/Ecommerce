@@ -53,8 +53,9 @@ export const loaduser = () => async (dispatch) => {
 
 export const logout = () => async (dispatch) => {
   try {
-    await axios.get(`api/v1/logout`);
+    await axios.get(`/api/v1/logout`);
     dispatch({ type: "logout_success" });
+    console.log("HI");
   } catch (error) {
     dispatch({
       type: "logout_fail",

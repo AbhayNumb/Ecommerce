@@ -2,16 +2,28 @@ import React, { Fragment, useEffect, useState } from "react";
 import Carousel from "react-material-ui-carousel";
 import "./ProductDetails.css";
 import { useSelector, useDispatch } from "react-redux";
-import { clearError, getProductDetails } from "../../actions/productAction";
+import {
+  clearError,
+  getProductDetails,
+  newReview,
+} from "../../actions/productAction";
 import { useParams } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import Loader from "../Layout/Loader/Loader";
-import { Paper, Button } from "@material-ui/core";
+import { Paper } from "@material-ui/core";
 import ReactStars from "react-rating-stars-component";
 import ReviewCard from "./ReviewCard";
 import { useAlert } from "react-alert";
 import MetaDeta from "../Layout/MetaDeta";
 import { addItemToCart } from "../../actions/cartActions";
+import {
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Button,
+} from "@material-ui/core";
+import { Rating } from "@material-ui/lab";
 const useStyles = makeStyles((theme) => ({
   root: {
     margin: "auto",
@@ -58,13 +70,24 @@ const ProductDetails = ({ match }) => {
   const { product, loading, error } = useSelector(
     (state) => state.productDetails
   );
+  const { success, error: reviewError } = useSelector(
+    (state) => state.newReview
+  );
   useEffect(() => {
     if (error) {
       alert.error(error);
       dispatch(clearError());
     }
+    if (reviewError) {
+      alert.error(reviewError);
+      dispatch(clearError());
+    }
+    if (success) {
+      alert.success("Review Submitted Successfully");
+      dispatch({ type: "new_review_reset" });
+    }
     dispatch(getProductDetails(id));
-  }, [dispatch, id, error, alert]);
+  }, [dispatch, id, error, alert, reviewError, success]);
   const options = {
     edit: false,
     color: "rgba(20,20,20,0.1)",
@@ -74,7 +97,22 @@ const ProductDetails = ({ match }) => {
     isHalf: true,
   };
   const classes = useStyles();
+  const [open, setOpen] = useState(false);
+  const [rating, setRating] = useState(0);
+  const [comment, setComment] = useState("");
+  const submitReviewToggle = () => {
+    open ? setOpen(false) : setOpen(true);
+  };
+  const reviewSubmitHandler = () => {
+    const myForm = new FormData();
 
+    myForm.set("rating", rating);
+    myForm.set("comment", comment);
+    myForm.set("productId", id);
+
+    dispatch(newReview(myForm));
+    setOpen(false);
+  };
   return (
     <Fragment>
       {loading ? (
@@ -135,10 +173,42 @@ const ProductDetails = ({ match }) => {
               <div className="detailsBlock-4">
                 Description: <p>{product.description}</p>
               </div>
-              <button className="submitReview">Submit Review</button>
+              <button className="submitReview" onClick={submitReviewToggle}>
+                Submit Review
+              </button>
             </div>
           </div>
           <h3 className="reviewHeading">Reviews</h3>
+          <Dialog
+            aria-labelledby="simple-dialog-title"
+            open={open}
+            onClose={submitReviewToggle}
+          >
+            <DialogTitle>Submit Review</DialogTitle>
+            <DialogContent className="submitDialog">
+              <Rating
+                onChange={(e) => setRating(e.target.value)}
+                value={rating}
+                size="large"
+              />
+
+              <textarea
+                className="submitDialogTextArea"
+                cols="30"
+                rows="5"
+                value={comment}
+                onChange={(e) => setComment(e.target.value)}
+              ></textarea>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={submitReviewToggle} color="secondary">
+                Cancel
+              </Button>
+              <Button onClick={reviewSubmitHandler} color="primary">
+                Submit
+              </Button>
+            </DialogActions>
+          </Dialog>
           {product.reviews && product.reviews[0] ? (
             <div className="reviews">
               {product.reviews.map((review) => (

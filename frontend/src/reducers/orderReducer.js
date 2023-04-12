@@ -38,3 +38,23 @@ export const myOrdersReducer = createReducer(
     },
   }
 );
+export const orderDetailsReducer = createReducer(
+  { order: [] },
+  {
+    order_details_request: (state, action) => {
+      state.loading = true;
+    },
+    order_details_success: (state, action) => {
+      state.loading = false;
+      state.order = action.payload;
+    },
+    order_details_fail: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+    clear_error: (state, action) => {
+      state.error = null;
+    },
+  }
+);
+

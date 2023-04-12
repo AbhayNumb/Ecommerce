@@ -23,6 +23,7 @@ export const productReducer = createReducer(initialState, {
     state.error = null;
   },
 });
+// product Details
 export const productDetailsReducer = createReducer(initialState, {
   product_details_request: (state, action) => {
     state.loading = true;
@@ -39,3 +40,31 @@ export const productDetailsReducer = createReducer(initialState, {
     state.error = null;
   },
 });
+
+//new Review Reducer
+export const newReviewReducer = createReducer(
+  {},
+  {
+    new_review_request: (state, action) => {
+      state.loading = true;
+      state.success = undefined;
+    },
+    new_review_success: (state, action) => {
+      state.success = action.payload;
+      state.loading = false;
+    },
+    new_review_fail: (state, action) => {
+      state.loading = true;
+      state.success = undefined;
+      state.error = action.payload;
+    },
+    new_review_reset: (state, action) => {
+      state.loading = true;
+      state.success = undefined;
+      state.error = action.payload;
+    },
+    clear_error: (state, action) => {
+      state.error = null;
+    },
+  }
+);

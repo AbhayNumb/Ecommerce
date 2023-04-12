@@ -25,11 +25,14 @@ import Shipping from "./Components/Cart/Shipping.jsx";
 import ConfirmOrder from "./Components/Cart/ConfirmOrder.jsx";
 import Payment from "./Components/Cart/Payment.jsx";
 import OrderSuccess from "./Components/Cart/OrderSuccess.jsx";
-import MyOrders from "./Components/Cart/MyOrders.jsx";
+import MyOrders from "./Components/Order/MyOrders.jsx";
 import axios from "axios";
 import StripeLayout from "./Components/Route/StripeLayout";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
+import OrderDetails from "./Components/Order/OrderDetails.jsx";
+import DashBoard from "./Components/admin/DashBoard.jsx";
+import ProductList from './Components/admin/ProductList.jsx'
 function App() {
   const { isAuthenticated, user } = useSelector((state) => state.user);
   const [stripeApiKey, setStripeApiKey] = useState("");
@@ -122,6 +125,30 @@ function App() {
           element={
             <ProtectedRoute>
               <MyOrders />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/order/:id"
+          element={
+            <ProtectedRoute>
+              <OrderDetails />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/dashboard"
+          element={
+            <ProtectedRoute isAdmin={true}>
+              <DashBoard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/products"
+          element={
+            <ProtectedRoute isAdmin={true}>
+              <ProductList />
             </ProtectedRoute>
           }
         />

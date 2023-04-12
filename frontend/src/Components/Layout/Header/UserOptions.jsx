@@ -42,7 +42,7 @@ const UserOptions = ({ user }) => {
     navigate("/Cart");
   }
   function dashboard() {
-    navigate("/dashboard");
+    navigate("/admin/dashboard");
   }
   function orders() {
     navigate("/orders");
@@ -54,6 +54,8 @@ const UserOptions = ({ user }) => {
     // navigate("/logoutUser");
     dispatch(logout());
     alert.success("Logout Successfully");
+    console.log("HI");
+    navigate("/login");
   }
   const [open, setOpen] = useState(false);
   return (
