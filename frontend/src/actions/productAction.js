@@ -19,6 +19,7 @@ export const getProduct =
   };
 
 export const getProductDetails = (id) => async (dispatch) => {
+  console.log(id);
   try {
     dispatch({ type: "product_details_request" });
     const { data } = await axios.get(`/api/v1/product/${id}`);
@@ -55,6 +56,59 @@ export const getAdminProducts = () => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: "admin_product_fail",
+      payload: error.response.data.message,
+    });
+  }
+};
+
+export const createProduct = (productData) => async (dispatch) => {
+  try {
+    dispatch({ type: "new_product_request" });
+    const config = {
+      header: { "Content-Type": "application/json" },
+    };
+    const { data } = await axios.post(
+      `/api/v1/admin/products/new`,
+      productData,
+      config
+    );
+    dispatch({ type: "new_product_success", payload: data });
+  } catch (error) {
+    dispatch({
+      type: "new_product_fail",
+      payload: error.response.data.message,
+    });
+  }
+};
+
+export const deleteProduct = (id) => async (dispatch) => {
+  try {
+    dispatch({ type: "delete_product_request" });
+    const { data } = await axios.delete(`/api/v1/admin/product/${id}`);
+    dispatch({ type: "delete_product_success", payload: data.success });
+  } catch (error) {
+    dispatch({
+      type: "delete_product_fail",
+      payload: error.response.data.message,
+    });
+  }
+};
+
+export const updateProduct = (id, productData) => async (dispatch) => {
+  try {
+    dispatch({ type: "update_product_request" });
+    const config = {
+      header: { "Content-Type": "application/json" },
+    };
+    const { data } = await axios.put(
+      `/api/v1/admin/product/${id}`,
+      productData,
+      config
+    );
+    dispatch({ type: "update_product_success", payload: data.success });
+  } catch (error) {
+    dispatch({
+      type: "update_product_fail",
       payload: error.response.data.message,
     });
   }

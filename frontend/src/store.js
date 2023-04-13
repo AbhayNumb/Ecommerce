@@ -1,8 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
 import {
+  newProductReducer,
   newReviewReducer,
   productDetailsReducer,
   productReducer,
+  productsReducer,
 } from "./reducers/productReducer";
 import {
   forgotPasswordReducer,
@@ -17,7 +19,7 @@ import {
 } from "./reducers/orderReducer";
 const store = configureStore({
   reducer: {
-    products: productReducer,
+    products: productsReducer,
     productDetails: productDetailsReducer,
     user: userReducer,
     profile: profileReducer,
@@ -27,6 +29,8 @@ const store = configureStore({
     myOrders: myOrdersReducer,
     orderDetails: orderDetailsReducer,
     newReview: newReviewReducer,
+    newProduct: newProductReducer,
+    product:productReducer
   },
 });
 export default store;

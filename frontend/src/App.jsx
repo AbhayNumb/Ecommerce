@@ -33,6 +33,8 @@ import { loadStripe } from "@stripe/stripe-js";
 import OrderDetails from "./Components/Order/OrderDetails.jsx";
 import DashBoard from "./Components/admin/DashBoard.jsx";
 import ProductList from './Components/admin/ProductList.jsx'
+import NewProduct from './Components/admin/NewProduct.jsx'
+import UpdateProduct from './Components/admin/UpdateProduct.jsx'
 function App() {
   const { isAuthenticated, user } = useSelector((state) => state.user);
   const [stripeApiKey, setStripeApiKey] = useState("");
@@ -149,6 +151,22 @@ function App() {
           element={
             <ProtectedRoute isAdmin={true}>
               <ProductList />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/product"
+          element={
+            <ProtectedRoute isAdmin={true}>
+              <NewProduct />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/product/:id"
+          element={
+            <ProtectedRoute isAdmin={true}>
+              <UpdateProduct />
             </ProtectedRoute>
           }
         />

@@ -1,7 +1,11 @@
 import React, { Fragment, useEffect } from "react";
 import { DataGrid } from "@material-ui/data-grid";
 import { useSelector, useDispatch } from "react-redux";
-import { clearError, getAdminProducts } from "../../actions/productAction";
+import {
+  clearError,
+  getAdminProducts,
+  deleteProduct,
+} from "../../actions/productAction";
 import { Link } from "react-router-dom";
 import { useAlert } from "react-alert";
 import { Button } from "@material-ui/core";
@@ -9,11 +13,19 @@ import MetaDeta from "../Layout/MetaDeta";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
 import SideBar from "./SideBar";
-
+import { useNavigate } from "react-router-dom";
 import "./ProductList.css";
 const ProductList = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const alert = useAlert();
+  const deleteProductHandler = (id) => {
+    dispatch(deleteProduct(id));
+  };
+  const { error: deleteError, isDeleted } = useSelector(
+    (state) => state.product
+  );
+
   const columns = [
     { field: "id", headerName: "Product ID", minWidth: 200, flex: 0.5 },
 
@@ -49,14 +61,14 @@ const ProductList = () => {
       renderCell: (params) => {
         return (
           <Fragment>
-            <Link>
+            <Link to={`/admin/product/${params.getValue(params.id, "id")}`}>
               <EditIcon />
             </Link>
 
             <Button
-            // onClick={() =>
-            // deleteProductHandler(params.getValue(params.id, "id"))
-            // }
+              onClick={() =>
+                deleteProductHandler(params.getValue(params.id, "id"))
+              }
             >
               <DeleteIcon />
             </Button>
@@ -72,8 +84,18 @@ const ProductList = () => {
       alert.error(error);
       dispatch(clearError());
     }
+    if (deleteError) {
+      alert.error(deleteError);
+      dispatch(clearError());
+    }
+
+    if (isDeleted) {
+      alert.success("Product Deleted Successfully");
+      navigate("/admin/dashboard");
+      dispatch({ type: "delete_product_reset" });
+    }
     dispatch(getAdminProducts());
-  }, [dispatch, alert, error]);
+  }, [dispatch, alert, error, deleteError, isDeleted, navigate]);
   products &&
     products.forEach((item) => {
       rows.push({

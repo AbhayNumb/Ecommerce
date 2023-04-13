@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import SideBar from "./SideBar.jsx";
 import { Typography } from "@material-ui/core";
 import { Link } from "react-router-dom";
@@ -17,6 +17,7 @@ import {
 } from "chart.js";
 
 import "./DashBoard.css";
+import { getAdminProducts } from "../../actions/productAction.js";
 Chart.register(
   CategoryScale,
   ArcElement,
@@ -27,8 +28,22 @@ Chart.register(
   [Tooltip]
 );
 const DashBoard = () => {
-  const { faker } = require("@faker-js/faker");
+  const dispatch = useDispatch();
   const { products } = useSelector((state) => state.products);
+  useEffect(() => {
+    dispatch(getAdminProducts());
+    // dispatch(getAllOrders());
+    // dispatch(getAllUsers());
+  }, [dispatch]);
+  let outOfStock = 0;
+  // console.log(products);
+  products &&
+    products.forEach((item) => {
+      if (item.Stock === 0) {
+        outOfStock += 1;
+      }
+    });
+
   const options = {
     responsive: true,
     plugins: {
@@ -54,7 +69,7 @@ const DashBoard = () => {
       {
         backgroundColor: ["#00A6B4", "#6800B4"],
         hoverBackgroundColor: ["#4B5000", "#35014F"],
-        data: [2, 10],
+        data: [outOfStock, products.length - outOfStock],
       },
     ],
   };
