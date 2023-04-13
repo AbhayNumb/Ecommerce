@@ -83,3 +83,13 @@ exports.getAllProducts = catchAsyncError(async (req, res, next) => {
     filteredProductsCount,
   });
 });
+
+//admin
+exports.getAdminProducts = catchAsyncError(async (req, res, next) => {
+  console.log("HI");
+  const products = await Product.find();
+  res.status(200).json({
+    success: true,
+    products,
+  });
+});

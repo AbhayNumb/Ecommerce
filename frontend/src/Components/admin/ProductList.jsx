@@ -1,11 +1,7 @@
 import React, { Fragment, useEffect } from "react";
 import { DataGrid } from "@material-ui/data-grid";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  clearErrors,
-  getAdminProduct,
-  deleteProduct,
-} from "../../actions/productAction";
+import { clearError, getAdminProducts } from "../../actions/productAction";
 import { Link } from "react-router-dom";
 import { useAlert } from "react-alert";
 import { Button } from "@material-ui/core";
@@ -50,12 +46,43 @@ const ProductList = () => {
       minWidth: 150,
       type: "number",
       sortable: false,
-      
+      renderCell: (params) => {
+        return (
+          <Fragment>
+            <Link>
+              <EditIcon />
+            </Link>
+
+            <Button
+            // onClick={() =>
+            // deleteProductHandler(params.getValue(params.id, "id"))
+            // }
+            >
+              <DeleteIcon />
+            </Button>
+          </Fragment>
+        );
+      },
     },
   ];
-
+  const { error, products } = useSelector((state) => state.products);
   const rows = [];
-
+  useEffect(() => {
+    if (error) {
+      alert.error(error);
+      dispatch(clearError());
+    }
+    dispatch(getAdminProducts());
+  }, [dispatch, alert, error]);
+  products &&
+    products.forEach((item) => {
+      rows.push({
+        id: item._id,
+        stock: item.Stock,
+        price: item.price,
+        name: item.name,
+      });
+    });
   return (
     <Fragment>
       <MetaDeta title={`ALL PRODUCTS - Admin`} />

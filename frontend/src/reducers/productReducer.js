@@ -19,6 +19,20 @@ export const productReducer = createReducer(initialState, {
     state.loading = false;
     state.error = action.payload;
   },
+
+  admin_product_request: (state, action) => {
+    state.products = [];
+    state.loading = true;
+  },
+  admin_product_success: (state, action) => {
+    state.products = action.payload.products;
+    state.loading = false;
+  },
+  admin_product_fail: (state, action) => {
+    state.loading = false;
+    state.error = action.payload;
+  },
+
   clear_error: (state, action) => {
     state.error = null;
   },

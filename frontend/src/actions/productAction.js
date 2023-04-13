@@ -47,6 +47,19 @@ export const newReview = (reviewData) => async (dispatch) => {
   }
 };
 
+export const getAdminProducts = () => async (dispatch) => {
+  try {
+    dispatch({ type: "admin_product_request" });
+    const { data } = await axios.get("/api/v1/admin/products");
+    dispatch({ type: "admin_product_success", payload: data });
+  } catch (error) {
+    dispatch({
+      type: "admin_product_fail",
+      payload: error.response.data.message,
+    });
+  }
+};
+
 //clearing errors
 export const clearError = () => async (dispatch) => {
   dispatch({ type: "clear_error" });
