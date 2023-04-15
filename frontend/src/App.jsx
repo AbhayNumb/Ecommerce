@@ -32,9 +32,13 @@ import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import OrderDetails from "./Components/Order/OrderDetails.jsx";
 import DashBoard from "./Components/admin/DashBoard.jsx";
-import ProductList from './Components/admin/ProductList.jsx'
-import NewProduct from './Components/admin/NewProduct.jsx'
-import UpdateProduct from './Components/admin/UpdateProduct.jsx'
+import ProductList from "./Components/admin/ProductList.jsx";
+import NewProduct from "./Components/admin/NewProduct.jsx";
+import UpdateProduct from "./Components/admin/UpdateProduct.jsx";
+import OrderList from "./Components/admin/OrderList.jsx";
+import ProcessOrder from "./Components/admin/ProcessOrder.jsx";
+import UserList from "./Components/admin/UserList.jsx";
+import UpdateUser from "./Components/admin/UpdateUser.jsx";
 function App() {
   const { isAuthenticated, user } = useSelector((state) => state.user);
   const [stripeApiKey, setStripeApiKey] = useState("");
@@ -154,6 +158,7 @@ function App() {
             </ProtectedRoute>
           }
         />
+
         <Route
           path="/admin/product"
           element={
@@ -170,7 +175,38 @@ function App() {
             </ProtectedRoute>
           }
         />
-
+        <Route
+          path="/admin/orders"
+          element={
+            <ProtectedRoute isAdmin={true}>
+              <OrderList />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/order/:id"
+          element={
+            <ProtectedRoute isAdmin={true}>
+              <ProcessOrder />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/users"
+          element={
+            <ProtectedRoute isAdmin={true}>
+              <UserList />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/user/:id"
+          element={
+            <ProtectedRoute isAdmin={true}>
+              <UpdateUser />
+            </ProtectedRoute>
+          }
+        />
         <Route path="/Cart" element={<Cart />} />
         <Route path="/password/forgot" element={<ForgotPassword />} />
         <Route path="/search" element={<Search />} />

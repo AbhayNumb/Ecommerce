@@ -7,15 +7,19 @@ import {
   productsReducer,
 } from "./reducers/productReducer";
 import {
+  allUsersReducers,
   forgotPasswordReducer,
   profileReducer,
   userReducer,
+  usersDetailsReducers,
 } from "./reducers/userReducer";
 import { cartReducer } from "./reducers/cartReducer";
 import {
+  allOrdersReducer,
   myOrdersReducer,
   newOrderReducer,
   orderDetailsReducer,
+  orderReducer,
 } from "./reducers/orderReducer";
 const store = configureStore({
   reducer: {
@@ -30,7 +34,11 @@ const store = configureStore({
     orderDetails: orderDetailsReducer,
     newReview: newReviewReducer,
     newProduct: newProductReducer,
-    product:productReducer
+    product: productReducer,
+    allOrders: allOrdersReducer,
+    order: orderReducer,
+    allUsers: allUsersReducers,
+    userDetails: usersDetailsReducers,
   },
 });
 export default store;

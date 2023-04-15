@@ -32,14 +32,14 @@ const ProductList = () => {
     {
       field: "name",
       headerName: "Name",
-      minWidth: 350,
+      minWidth: 300,
       flex: 1,
     },
     {
       field: "stock",
       headerName: "Stock",
       type: "number",
-      minWidth: 150,
+      minWidth: 120,
       flex: 0.3,
     },
 
@@ -47,7 +47,7 @@ const ProductList = () => {
       field: "price",
       headerName: "Price",
       type: "number",
-      minWidth: 270,
+      minWidth: 200,
       flex: 0.5,
     },
 
@@ -55,7 +55,7 @@ const ProductList = () => {
       field: "actions",
       flex: 0.3,
       headerName: "Actions",
-      minWidth: 150,
+      minWidth: 100,
       type: "number",
       sortable: false,
       renderCell: (params) => {

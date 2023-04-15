@@ -7,7 +7,6 @@
   flex-direction: column;
   height: 100vh;
 }
-
 #productListHeading {
   font: 400 2rem "Roboto";
   padding: 0.5vmax;
@@ -55,12 +54,8 @@
 
 
 /* Hide scrollbar for Chrome, Safari and Opera */
-.MuiDataGrid-window::-webkit-scrollbar {
+/* .MuiDataGrid-window::-webkit-scrollbar {
   display: none;
-}
+} */
 
 /* Hide scrollbar for IE, Edge and Firefox */
-.MuiDataGrid-window {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
-}

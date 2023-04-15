@@ -92,7 +92,36 @@ export const profileReducer = createReducer(
     update_password_reset: (state, action) => {
       state.isUpdated = false;
     },
-
+    update_user_request: (state, action) => {
+      state.loading = true;
+    },
+    update_user_success: (state, action) => {
+      state.loading = false;
+      state.isUpdated = action.payload;
+    },
+    update_user_fail: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+    update_user_reset: (state, action) => {
+      state.isUpdated = false;
+    },
+    delete_user_request: (state, action) => {
+      state.loading = true;
+    },
+    delete_user_success: (state, action) => {
+      state.loading = false;
+      state.isDeleted = action.payload.success;
+      state.message= action.payload.message;
+    },
+    delete_user_fail: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+    delete_user_reset: (state, action) => {
+      state.isDeleted = false;
+      state.message= undefined;
+    },
     clear_error: (state, action) => {
       state.error = null;
     },
@@ -130,6 +159,46 @@ export const forgotPasswordReducer = createReducer(
     },
     clear_error: (state, action) => {
       state.message = null;
+      state.error = null;
+    },
+  }
+);
+
+export const allUsersReducers = createReducer(
+  {},
+  {
+    all_users_request: (state, action) => {
+      state.loading = true;
+    },
+    all_users_success: (state, action) => {
+      state.loading = false;
+      state.users = action.payload;
+    },
+    all_users_fail: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+    clear_error: (state, action) => {
+      state.error = null;
+    },
+  }
+);
+
+export const usersDetailsReducers = createReducer(
+  { user: {} },
+  {
+    user_details_request: (state, action) => {
+      state.loading = true;
+    },
+    user_details_success: (state, action) => {
+      state.loading = false;
+      state.user = action.payload;
+    },
+    user_details_fail: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+    clear_error: (state, action) => {
       state.error = null;
     },
   }

@@ -18,6 +18,8 @@ import {
 
 import "./DashBoard.css";
 import { getAdminProducts } from "../../actions/productAction.js";
+import { getAllOrders } from "../../actions/orderAction.js";
+import { getAllUsers } from "../../actions/userAction.js";
 Chart.register(
   CategoryScale,
   ArcElement,
@@ -30,10 +32,12 @@ Chart.register(
 const DashBoard = () => {
   const dispatch = useDispatch();
   const { products } = useSelector((state) => state.products);
+  const { orders } = useSelector((state) => state.allOrders);
+  const { users } = useSelector((state) => state.allUsers);
   useEffect(() => {
     dispatch(getAdminProducts());
-    // dispatch(getAllOrders());
-    // dispatch(getAllUsers());
+    dispatch(getAllOrders());
+    dispatch(getAllUsers());
   }, [dispatch]);
   let outOfStock = 0;
   // console.log(products);
@@ -73,7 +77,11 @@ const DashBoard = () => {
       },
     ],
   };
-
+  let totalAmount = 0;
+  orders &&
+    orders.forEach((item) => {
+      totalAmount += item.totalPrice;
+    });
   const lineState = {
     labels: ["Initial Amount", "Amount Earned"],
     datasets: [
@@ -81,7 +89,7 @@ const DashBoard = () => {
         label: "TOTAL AMOUNT",
         backgroundColor: ["tomato"],
         hoverBackgroundColor: ["rgb(197, 72, 49)"],
-        data: [0, 40000],
+        data: [0, totalAmount],
       },
     ],
   };
@@ -96,7 +104,10 @@ const DashBoard = () => {
 
         <div className="dashboardSummary">
           <div>
-            <p>{/* Total Amount <br /> ₹{totalAmount} */}</p>
+            <p>
+              {" "}
+              Total Amount <br /> ₹{totalAmount}{" "}
+            </p>
           </div>
           <div className="dashboardSummaryBox2">
             <Link to="/admin/products">
@@ -105,11 +116,11 @@ const DashBoard = () => {
             </Link>
             <Link to="/admin/orders">
               <p>Orders</p>
-              {/* <p>{orders && orders.length}</p> */}
+              {<p>{orders && orders.length}</p>}
             </Link>
             <Link to="/admin/users">
               <p>Users</p>
-              {/* <p>{users && users.length}</p> */}
+              {<p>{users && users.length}</p>}
             </Link>
           </div>
         </div>

@@ -82,9 +82,12 @@ exports.updateOrder = catchAsyncError(async (req, res, next) => {
   if (order.orderStatus === "Delievered") {
     return next(new ErrorHandler("You have already Delieverd this order", 400));
   }
-  order.orderItems.forEach(async (order) => {
-    await updateStock(order.product, order.quantity);
-  });
+  if (req.body.status === "Shipped") {
+    order.orderItems.forEach(async (order) => {
+      await updateStock(order.product, order.quantity);
+    });
+  }
+
   order.orderStatus = req.body.status;
   if (req.body.status === "Delievered") {
     order.deliveredAt = Date.now();
@@ -118,6 +121,7 @@ exports.getAllOrders = catchAsyncError(async (req, res, next) => {
 
 //update order status--admin
 exports.deleteOrder = catchAsyncError(async (req, res, next) => {
+  console.log("HI");
   const order = await Order.findById(req.params.id);
   if (!order) {
     return next(
