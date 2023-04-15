@@ -4,7 +4,9 @@ import {
   newReviewReducer,
   productDetailsReducer,
   productReducer,
+  productReviewsReducer,
   productsReducer,
+  reviewReducer,
 } from "./reducers/productReducer";
 import {
   allUsersReducers,
@@ -39,6 +41,8 @@ const store = configureStore({
     order: orderReducer,
     allUsers: allUsersReducers,
     userDetails: usersDetailsReducers,
+    productReviews: productReviewsReducer,
+    review: reviewReducer,
   },
 });
 export default store;

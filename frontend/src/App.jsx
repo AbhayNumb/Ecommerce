@@ -39,6 +39,11 @@ import OrderList from "./Components/admin/OrderList.jsx";
 import ProcessOrder from "./Components/admin/ProcessOrder.jsx";
 import UserList from "./Components/admin/UserList.jsx";
 import UpdateUser from "./Components/admin/UpdateUser.jsx";
+import ProductReviews from "./Components/admin/ProductReviews.jsx";
+import Contact from "./component/layout/Contact/Contact.jsx";
+import About from "./component/layout/About/About.jsx";
+import NotFound from "./component/layout/Not Found/NotFound.jsx";
+
 function App() {
   const { isAuthenticated, user } = useSelector((state) => state.user);
   const [stripeApiKey, setStripeApiKey] = useState("");
@@ -57,8 +62,9 @@ function App() {
     store.dispatch(loaduser());
     getStripeApiKey();
   }, []);
+  // window.addEventListener("contextmenu", (e) => e.preventDefault());
   return (
-    <BrowserRouter>
+    <BrowserRouter >  
       <Header />
       {isAuthenticated && <UserOptions user={user}></UserOptions>}
       <Routes>
@@ -67,6 +73,9 @@ function App() {
         <Route path="/products" element={<Products />} />
         <Route path="/products/:keyword" element={<Products />} />
         {/* <Route path="/account" element={<Profile />} /> */}
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/about" element={<About />} />
+
         <Route
           path="/account"
           element={
@@ -207,11 +216,20 @@ function App() {
             </ProtectedRoute>
           }
         />
+        <Route
+          path="/admin/reviews"
+          element={
+            <ProtectedRoute isAdmin={true}>
+              <ProductReviews />
+            </ProtectedRoute>
+          }
+        />
         <Route path="/Cart" element={<Cart />} />
         <Route path="/password/forgot" element={<ForgotPassword />} />
         <Route path="/search" element={<Search />} />
         <Route path="/password/reset/:token" element={<ResetPassword />} />
         <Route path="/login" element={<LoginSignUp />}></Route>
+        <Route path="*" element={<NotFound />} />
       </Routes>
       <Footer />
     </BrowserRouter>

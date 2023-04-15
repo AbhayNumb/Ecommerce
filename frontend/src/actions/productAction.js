@@ -113,6 +113,40 @@ export const updateProduct = (id, productData) => async (dispatch) => {
     });
   }
 };
+//get allreviews of aproduct --admin 
+export const getAllReviews = (id) => async (dispatch) => {
+  try {
+    dispatch({ type: "all_review_request" });
+    const config = {
+      header: { "Content-Type": "application/json" },
+    };
+    const { data } = await axios.get(`/api/v1/reviews?id=${id}`);
+    dispatch({ type: "all_review_success", payload: data.reviews });
+  } catch (error) {
+    dispatch({
+      type: "all_review_fail",
+      payload: error.response.data.message,
+    });
+  }
+};
+
+
+//get allreviews of aproduct --admin 
+export const deleteReviews = (reviewid,productid) => async (dispatch) => {
+  console.log(reviewid,productid);
+  try {
+    dispatch({ type: "delete_review_request" });
+    const { data } = await axios.delete(`/api/v1/reviews?id=${reviewid}&productId=${productid}`);
+    dispatch({ type: "delete_review_success", payload: data.success });
+  } catch (error) {
+    dispatch({
+      type: "delete_review_fail",
+      payload: error.response.data.message,
+    });
+  }
+};
+
+
 
 //clearing errors
 export const clearError = () => async (dispatch) => {

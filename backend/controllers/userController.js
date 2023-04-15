@@ -68,7 +68,9 @@ exports.forgotPassword = catchAsyncError(async (req, res, next) => {
   //get resetpassword token
   const resetToken = user.getResetPasswordToken();
   await user.save({ validateBeforeSave: false });
-  const resetPasswordUrl = `${process.env.FRONTEND_URL}/password/reset/${resetToken}`;
+  const resetPasswordUrl = `${req.protocol}://${req.get(
+    "host"
+  )}/password/reset/${resetToken}`;
   const message = `Your password reset token is :- \n\n ${resetPasswordUrl} \n\nIf you have not requested this email then, please ignore it.`;
   try {
     await sendEmail({
@@ -256,7 +258,6 @@ exports.createProductReview = catchAsyncError(async (req, res, next) => {
       }
     });
   } else {
-    console.log("HI");
     product.reviews.push(review);
     product.numOfReviews = product.reviews.length;
   }
@@ -277,6 +278,7 @@ exports.getProductReviews = catchAsyncError(async (req, res, next) => {
   if (!product) {
     return next(new ErrorHandler(`Product not found`, 404));
   }
+  // console.log(product.reviews);
   res.status(200).json({
     success: true,
     reviews: product.reviews,
@@ -296,7 +298,12 @@ exports.deleteReviews = catchAsyncError(async (req, res, next) => {
   reviews.forEach((rev) => {
     avg += rev.rating;
   });
-  const ratings = avg / product.reviews.length;
+  let ratings = 0;
+  if (reviews.length === 0) {
+    ratings = 0;
+  } else {
+    ratings = avg / product.reviews.length;
+  }
   const numOfReviews = reviews.length;
   await Product.findByIdAndUpdate(
     req.query.productId,

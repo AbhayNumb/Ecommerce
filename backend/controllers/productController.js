@@ -29,7 +29,6 @@ exports.createProduct = catchAsyncError(async (req, res, next) => {
 
 //update product---ADMIN
 exports.updateProduct = catchAsyncError(async (req, res, next) => {
-  console.log("Gi");
   let product = await Product.findById(req.params.id);
   if (!product) {
     return next(new ErrorHandler("Product not found", 404));

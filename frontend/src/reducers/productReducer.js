@@ -50,8 +50,8 @@ export const productDetailsReducer = createReducer(initialState, {
     state.loading = false;
     state.error = action.payload;
   },
-  makeEmpty:(state,action)=>{
-    state.product=[]
+  makeEmpty: (state, action) => {
+    state.product = [];
   },
   clear_error: (state, action) => {
     state.error = null;
@@ -106,7 +106,6 @@ export const newProductReducer = createReducer(
     new_product_reset: (state, action) => {
       state.loading = false;
       state.success = undefined;
-      state.error = action.payload;
     },
     clear_error: (state, action) => {
       state.error = null;
@@ -146,6 +145,52 @@ export const productReducer = createReducer(
     update_product_reset: (state, action) => {
       state.loading = false;
       state.isUpdated = false;
+    },
+    clear_error: (state, action) => {
+      state.error = null;
+    },
+  }
+);
+// product Details
+export const productReviewsReducer = createReducer(
+  { reviews: [] },
+  {
+    all_review_request: (state, action) => {
+      state.loading = true;
+    },
+    all_review_success: (state, action) => {
+      state.reviews = action.payload;
+      state.loading = false;
+    },
+    all_review_fail: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+    clear_error: (state, action) => {
+      state.error = null;
+    },
+  }
+);
+
+//new Review Reducer
+export const reviewReducer = createReducer(
+  {},
+  {
+    delete_review_request: (state, action) => {
+      state.loading = true;
+    },
+    delete_review_success: (state, action) => {
+      state.loading = false;
+      state.isDeleted = true;
+    },
+    delete_review_fail: (state, action) => {
+      state.loading = false;
+      state.isDeleted = false;
+      state.error = action.payload;
+    },
+    delete_review_reset: (state, action) => {
+      state.loading = false;
+      state.isDeleted = false;
     },
     clear_error: (state, action) => {
       state.error = null;
