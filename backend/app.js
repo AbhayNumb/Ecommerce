@@ -25,7 +25,7 @@ app.use("/api/v1", order);
 app.use("/api/v1", payment);
 app.use(express.static(path.join(__dirname, "../frontend/build")));
 //middleware for error
-app.get("*", (req, res) => {
+app.use("*", (req, res) => {
   res.sendFile(path.resolve(__dirname, "../frontend/build"));
 });
 app.use(errorMiddleware);
