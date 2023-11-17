@@ -19,14 +19,13 @@ class ApiFeatures {
     const queryCpy = { ...this.queryStr };
     const removeField = ["keyword", "page", "limit"];
     removeField.forEach((key) => delete queryCpy[key]);
-    console.log(queryCpy);
     let queryStr = JSON.stringify(queryCpy);
     queryStr = queryStr.replace(/\b(gt|gte|lt|lte)\b/g, (key) => `$${key}`);
     this.query = this.query.find(JSON.parse(queryStr));
     return this;
   }
   pagination(resultperpage) {
-    const currentpage = this.queryStr.page;
+    const currentpage = Number(this.queryStr.page) || 1;
     const skip = resultperpage * (currentpage - 1);
     this.query = this.query.limit(resultperpage).skip(skip);
     return this;
